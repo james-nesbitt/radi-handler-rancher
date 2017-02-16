@@ -13,25 +13,19 @@ type RancherOrchestrateHandler struct {
 	RancherBaseClientHandler
 }
 
-// Initialize and activate the Handler
-func (orchestrate *RancherOrchestrateHandler) Init() api_operation.Result {
-	result := api_operation.New_StandardResult()
+// Return a string identifier for the Handler (not functionally needed yet)
+func (orchestrate *RancherOrchestrateHandler) Id() string {
+	return "rancher.orchestrate"
+}
 
+// Initialize and activate the Handler
+func (orchestrate *RancherOrchestrateHandler) Operations() api_operation.Operations {
 	base := New_RancherBaseClientOperation(orchestrate.ConfigSource())
 
-	ops := api_operation.Operations{}
+	ops := api_operation.New_SimpleOperations()
 
 	ops.Add(api_operation.Operation(&RancherOrchestrateUpOperation{RancherBaseClientOperation: *base}))
 	ops.Add(api_operation.Operation(&RancherOrchestrateDownOperation{RancherBaseClientOperation: *base}))
 
-	orchestrate.operations = &ops
-
-	result.MarkSuccess()
-	result.MarkFinished()
-	return api_operation.Result(result)
-}
-
-// Rturn a string identifier for the Handler (not functionally needed yet)
-func (orchestrate *RancherOrchestrateHandler) Id() string {
-	return "rancher.orchestrate"
+	return ops.Operations()
 }
