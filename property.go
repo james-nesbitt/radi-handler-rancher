@@ -4,6 +4,9 @@ import (
 	log "github.com/Sirupsen/logrus"
 
 	rancher_client "github.com/rancher/go-rancher/client"
+
+	api_property "github.com/wunderkraut/radi-api/property"
+	api_usage "github.com/wunderkraut/radi-api/usage"
 )
 
 /**
@@ -35,8 +38,8 @@ func (clientOpts *RancherClientOptsProperty) Description() string {
 }
 
 // Is the Property internal only
-func (clientOpts *RancherClientOptsProperty) Internal() bool {
-	return true
+func (clientOpts *RancherClientOptsProperty) Usage() api_usage.Usage {
+	return api_property.Usage_Internal()
 }
 
 // Give an idea of what type of value the property consumes

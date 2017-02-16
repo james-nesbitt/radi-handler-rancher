@@ -4,6 +4,9 @@ import (
 	log "github.com/Sirupsen/logrus"
 
 	api_operation "github.com/wunderkraut/radi-api/operation"
+	api_property "github.com/wunderkraut/radi-api/property"
+	api_result "github.com/wunderkraut/radi-api/result"
+	api_usage "github.com/wunderkraut/radi-api/usage"
 )
 
 /**
@@ -15,7 +18,6 @@ import (
  */
 type RancherMonitorListEnvironmentsOperation struct {
 	RancherBaseClientOperation
-	properties *api_operation.Properties
 }
 
 // Return the string machinename/id of the Operation
@@ -33,26 +35,29 @@ func (listEnvironments *RancherMonitorListEnvironmentsOperation) Description() s
 	return "List information about the Rancher Environments."
 }
 
+// return a multiline string man-page for the Operation
+func (listEnvironments *RancherMonitorListEnvironmentsOperation) Help() string {
+	return ""
+}
+
 // Is this operation meant to be used only inside the API
-func (listEnvironments *RancherMonitorListEnvironmentsOperation) Internal() bool {
-	return false
+func (listEnvironments *RancherMonitorListEnvironmentsOperation) Usage() api_usage.Usage {
+	return api_operation.Usage_External()
 }
 
 // Run a validation check on the Operation
-func (listEnvironments *RancherMonitorListEnvironmentsOperation) Validate() bool {
-	return true
+func (listEnvironments *RancherMonitorListEnvironmentsOperation) Validate() api_result.Result {
+	return api_result.MakeSuccessfulResult()
 }
 
 // What settings/values does the Operation provide to an implemenentor
-func (listEnvironments *RancherMonitorListEnvironmentsOperation) Properties() api_operation.Properties {
-	props := api_operation.Properties{}
-
-	return props
+func (listEnvironments *RancherMonitorListEnvironmentsOperation) Properties() api_property.Properties {
+	return api_property.New_SimplePropertiesEmpty().Properties()
 }
 
 // Execute the Operation
-func (listEnvironments *RancherMonitorListEnvironmentsOperation) Exec(props *api_operation.Properties) api_operation.Result {
-	result := api_operation.New_StandardResult()
+func (listEnvironments *RancherMonitorListEnvironmentsOperation) Exec(props api_property.Properties) api_result.Result {
+	res := api_result.New_StandardResult()
 
 	client := listEnvironments.RancherClient()
 
@@ -82,8 +87,8 @@ func (listEnvironments *RancherMonitorListEnvironmentsOperation) Exec(props *api
 
 	log.WithFields(log.Fields{"client": client}).Info("RancherClient")
 
-	result.MarkSuccess()
+	res.MarkSuccess()
+	res.MarkFinished()
 
-	result.MarkFinished()
-	return api_operation.Result(result)
+	return res.Result()
 }

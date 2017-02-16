@@ -13,24 +13,18 @@ type RancherCommandHandler struct {
 	RancherBaseClientHandler
 }
 
-// Initialize and activate the Handler
-func (command *RancherCommandHandler) Init() api_operation.Result {
-	result := api_operation.New_StandardResult()
+// Rturn a string identifier for the Handler (not functionally needed yet)
+func (command *RancherCommandHandler) Id() string {
+	return "rancher.command"
+}
 
-	ops := api_operation.Operations{}
+// Validate the Handler
+func (command *RancherCommandHandler) Operations() api_operation.Operations {
+	ops := api_operation.New_SimpleOperations()
 
 	// ops.Add(api_operation.Operation(&RancherCommandUpOperation{BaseRancherServiceOperation: *baseOperation}))
 	// ops.Add(api_operation.Operation(&RancherCommandStopOperation{BaseRancherServiceOperation: *baseOperation}))
 	// ops.Add(api_operation.Operation(&RancherCommandDownOperation{BaseRancherServiceOperation: *baseOperation}))
 
-	command.operations = &ops
-
-	result.MarkSuccess()
-	result.MarkFinished()
-	return api_operation.Result(result)
-}
-
-// Rturn a string identifier for the Handler (not functionally needed yet)
-func (command *RancherCommandHandler) Id() string {
-	return "rancher.command"
+	return ops.Operations()
 }

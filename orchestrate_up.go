@@ -5,8 +5,9 @@ import (
 
 	log "github.com/Sirupsen/logrus"
 
-	api_operation "github.com/wunderkraut/radi-api/operation"
 	api_orchestrate "github.com/wunderkraut/radi-api/operation/orchestrate"
+	api_property "github.com/wunderkraut/radi-api/property"
+	api_result "github.com/wunderkraut/radi-api/result"
 )
 
 /**
@@ -16,7 +17,6 @@ import (
 type RancherOrchestrateUpOperation struct {
 	api_orchestrate.BaseOrchestrationUpOperation
 	RancherBaseClientOperation
-	properties *api_operation.Properties
 }
 
 // Alter the ID of the parent operation
@@ -25,26 +25,24 @@ func (up *RancherOrchestrateUpOperation) Id() string {
 }
 
 // Run a validation check on the Operation
-func (up *RancherOrchestrateUpOperation) Validate() bool {
-	return true
+func (up *RancherOrchestrateUpOperation) Validate() api_result.Result {
+	return api_result.MakeSuccessfulResult()
 }
 
 // What settings/values does the Operation provide to an implemenentor
-func (up *RancherOrchestrateUpOperation) Properties() api_operation.Properties {
-	props := api_operation.Properties{}
-
-	return props
+func (up *RancherOrchestrateUpOperation) Properties() api_property.Properties {
+	return api_property.New_SimplePropertiesEmpty().Properties()
 }
 
 // Execute the operation
-func (up *RancherOrchestrateUpOperation) Exec(props *api_operation.Properties) api_operation.Result {
-	result := api_operation.New_StandardResult()
+func (up *RancherOrchestrateUpOperation) Exec(props api_property.Properties) api_result.Result {
+	res := api_result.New_StandardResult()
 
 	log.WithFields(log.Fields{"clientsettings": up.RancherClientSettings(), "envsettings": up.RancherEnvironmentSettings()}).Info("SETTINGS")
 
-	result.AddError(errors.New("RANCHER UP OPERATION NOT YET WRITTEN"))
-	result.MarkFailed()
+	res.AddError(errors.New("RANCHER UP OPERATION NOT YET WRITTEN"))
+	res.MarkFailed()
 
-	result.MarkFinished()
-	return api_operation.Result(result)
+	res.MarkFinished()
+	return res.Result()
 }
