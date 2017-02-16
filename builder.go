@@ -34,8 +34,8 @@ func (builder *RancherBuilder) SetAPI(parent api_api.API) {
 
 // Initialize and activate the Handler
 func (builder *RancherBuilder) Activate(implementations api_builder.Implementations, settingsProvider api_builder.SettingsProvider) api_result.Result {
-	if &builder.handlers == nil {
-		builder.handlers = api_handler.Handlers{}
+	if builder.handlers == nil {
+		builder.handlers = api_handler.New_SimpleHandlers().Handlers()
 	}
 
 	// create a base handler
