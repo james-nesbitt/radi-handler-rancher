@@ -59,3 +59,10 @@ func (clientOpts *RancherClientOptsProperty) Set(value interface{}) bool {
 		return false
 	}
 }
+
+// Copy the property
+func (clientOpts *RancherClientOptsProperty) Copy() api_property.Property {
+	prop := &RancherClientOptsProperty{}
+	prop.Set(clientOpts.Get())
+	return api_property.Property(prop)
+}
